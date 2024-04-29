@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(cors());
 const corsConfig = {
-  origin: ["http://localhost:5173/"],
+  origin: ["http://localhost:5173/", "https://globeguidancehub-tourism.web.app"],
   credentials: true,
 };
 app.use(cors(corsConfig));
@@ -47,7 +47,6 @@ async function run() {
     });
     app.post("/touristsSpot", async (req, res) => {
       const newSpot = req.body;
-      console.log(newSpot);
       const result = await touristsSpotCollection.insertOne(newSpot);
       res.send(result);
     });
@@ -63,7 +62,6 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const updatedTouristsSpot = req.body;
-      console.log(updatedTouristsSpot);
       const updatedTouristsSpotDoc = {
         $set: {
           image: updatedTouristsSpot.image,
