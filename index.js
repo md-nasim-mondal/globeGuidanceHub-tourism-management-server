@@ -33,6 +33,20 @@ async function run() {
     const touristsSpotCollection = client
       .db("globeGuidanceHubDB")
       .collection("touristsSpot");
+    const usersCollection = client.db("globeGuidanceHubDB").collection("users");
+    const countriesCollection = client.db("globeGuidanceHubDB").collection("Coutries");
+    app.get("/countries", async (req, res) => {
+      const cursor = countriesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.get("/touristsSpotByCountries/:countryName", async (req, res) => {
+      const countryName = req.params.countryName;
+      const query = { countryName:countryName };
+      const cursor = touristsSpotCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     app.get("/touristsSpot/:email", async (req, res) => {
       const email = req.params.email;
       const query = { userEmail: email };
@@ -48,6 +62,11 @@ async function run() {
     app.post("/touristsSpot", async (req, res) => {
       const newSpot = req.body;
       const result = await touristsSpotCollection.insertOne(newSpot);
+      res.send(result);
+    });
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      const result = await usersCollection.insertOne(newUser);
       res.send(result);
     });
     app.get("/touristSpot/:id", async (req, res) => {
