@@ -59,6 +59,11 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.post("/touristsSpot", async (req, res) => {
+      const newSpot = req.body;
+      const result = await touristsSpotCollection.insertOne(newSpot);
+      res.send(result);
+    });
     app.post("/users", async (req, res) => {
       const newUser = req.body;
       const result = await usersCollection.insertOne(newUser);
